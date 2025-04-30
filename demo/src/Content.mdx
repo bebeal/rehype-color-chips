@@ -1,0 +1,29 @@
+# Color Chips Demo
+
+### Regular Colors
+#f00 #0f0 #00f
+
+### Escaped Colors (use \\: prefix)
+\:#f00 \:#0f0 \:#00f
+
+### Hex 6-digit Colors
+#ff0000 #00ff00 #0000ff
+
+### Escaped Hex 6-digit
+\:#ff0000 \:#00ff00 \:#0000ff
+
+### RGB Format
+rgb(255, 0, 0) rgb(0, 255, 0) rgb(0, 0, 255)
+
+### Escaped RGB Format
+\:rgb(255, 0, 0) \:rgb(0, 255, 0) \:rgb(0, 0, 255)
+
+## Plugin Configuration
+```ts
+import rehypeColorChips from '@bebeal/rehype-color-chips';
+mdx({
+  rehypePlugins: [
+    [rehypeColorChips]
+  ]
+})
+```

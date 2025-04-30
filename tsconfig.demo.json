@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist-demo",
+    "rootDir": "demo"
+  },
+  "include": ["demo"],
+  "exclude": ["node_modules", "dist", "dist-demo", "src"],
+  "references": [
+    { "path": "./tsconfig.build.json" }
+  ]
+}

@@ -1,0 +1,22 @@
+/* styles.css */
+@import './assets/fonts/BerkeleyMono.css';
+
+body {
+  background: #2a2a2a;
+  color: #fff;
+  font-family: 'Berkeley Mono', monospace;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1, h2 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+pre {
+  background: #333;
+  padding: 1rem;
+  border-radius: 4px;
+}

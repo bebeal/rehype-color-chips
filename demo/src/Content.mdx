@@ -1,29 +1,27 @@
-# Color Chips Demo
-
-### Regular Colors
-#f00 #0f0 #00f
-
-### Escaped Colors (use \\: prefix)
-\:#f00 \:#0f0 \:#00f
-
-### Hex 6-digit Colors
-#ff0000 #00ff00 #0000ff
-
-### Escaped Hex 6-digit
-\:#ff0000 \:#00ff00 \:#0000ff
-
-### RGB Format
-rgb(255, 0, 0) rgb(0, 255, 0) rgb(0, 0, 255)
-
-### Escaped RGB Format
-\:rgb(255, 0, 0) \:rgb(0, 255, 0) \:rgb(0, 0, 255)
-
-## Plugin Configuration
-```ts
-import rehypeColorChips from '@bebeal/rehype-color-chips';
-mdx({
-  rehypePlugins: [
-    [rehypeColorChips]
-  ]
-})
-```
+<h1>Rehype Color Chips</h1>
+<table>
+  <tr>
+    <td>
+      <code>\:#f00</code> → #f00<br />
+      <code>\:#0f0</code> → #0f0<br />
+      <code>\:#00f</code> → #00f
+    </td>
+    <td>
+      <code>\\::#f00</code> → \:#f00<br />
+      <code>\\::#0f0</code> → \:#0f0<br />
+      <code>\\::#00f</code> → \:#00f
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <code>\:rgb(255, 0, 0)</code> → rgb(255, 0, 0)<br />
+      <code>\:rgb(0, 255, 0)</code> → rgb(0, 255, 0)<br />
+      <code>\:rgb(0, 0, 255)</code> → rgb(0, 0, 255)
+    </td>
+    <td>
+      <code>\\::rgb(255, 0, 0)</code> → \:rgb(255, 0, 0)<br />
+      <code>\\::rgb(0, 255, 0)</code> → \:rgb(0, 255, 0)<br />
+      <code>\\::rgb(0, 0, 255)</code> → \:rgb(0, 0, 255)
+    </td>
+  </tr>
+</table>

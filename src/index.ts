@@ -19,15 +19,31 @@ const createColorChip = (color: string): Element => ({
   type: 'element',
   tagName: 'span',
   properties: {
-    className: ['color-chip'],
-    style: `display:inline-flex;align-items:center;margin-right:12px;font-family:monospace;`
+    style: [
+      'display:inline-flex',
+      'align-items:center',
+      'justify-content:center',
+      'white-space:nowrap',
+      'font-size:inherit',
+      'line-height:inherit',
+      'font-family:monospace'
+    ].join(';')
   },
   children: [
     {
       type: 'element',
       tagName: 'span',
       properties: {
-        style: `display:inline-block;width:10px;height:10px;margin-right:6px;background:${color};border:1px solid rgba(255,255,255,0.2);border-radius:2px;`
+        style: [
+          'display:inline-block',
+          'width:0.6em',
+          'height:0.6em',
+          `background-color:${color}`,
+          'border:0.5px solid currentColor',
+          'box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.2)',
+          'border-radius:0.125em',
+          'margin-right:1px',
+        ].join(';')
       },
       children: []
     },
@@ -43,10 +59,10 @@ const rehypeColorChips: Plugin = () => {
     // First pass: replace "\:" prefixes with a unique placeholder
     const escapedColors = new Map<string, string>();
     let counter = 0;
-    
+
     visit(tree, 'text', (node: TextNode) => {
       if (!node.value) return;
-      
+
       // Replace escaped colors with placeholders
       node.value = node.value.replace(new RegExp(escapePrefix + '(' + colorRegex.source + ')', 'g'), (_, color) => {
         const placeholder = `__ESCAPED_COLOR_${counter++}__`;
@@ -54,47 +70,47 @@ const rehypeColorChips: Plugin = () => {
         return placeholder;
       });
     });
-    
+
     // Second pass: process normal colors
     visit(tree, 'text', (node: TextNode, index: number | null, parent: Parent | null) => {
       if (!parent || index === null || !node.value) return;
-      
+
       const matches = Array.from(node.value.matchAll(colorRegex));
       if (matches.length === 0) return;
-      
+
       const result: (TextNode | Element)[] = [];
       let lastIndex = 0;
-      
+
       matches.forEach((match) => {
         const color = match[0];
         const startIndex = match.index!;
-        
+
         if (startIndex > lastIndex) {
           result.push({
             type: 'text',
             value: node.value.slice(lastIndex, startIndex)
           });
         }
-        
+
         result.push(createColorChip(color));
         lastIndex = startIndex + color.length;
       });
-      
+
       if (lastIndex < node.value.length) {
         result.push({
           type: 'text',
           value: node.value.slice(lastIndex)
         });
       }
-      
+
       parent.children.splice(index, 1, ...result);
       return index + result.length;
     });
-    
+
     // Third pass: restore escaped colors
     visit(tree, 'text', (node: TextNode) => {
       if (!node.value) return;
-      
+
       for (const [placeholder, color] of escapedColors.entries()) {
         node.value = node.value.replace(placeholder, color);
       }

@@ -26,7 +26,7 @@ const createColorChip = (color: string): Element => ({
       'white-space:nowrap',
       'font-size:inherit',
       'line-height:inherit',
-      'font-family:monospace'
+      'font-family:inherit,monospace'
     ].join(';')
   },
   children: [

@@ -1,6 +1,6 @@
 {
   "name": "@bebeal/rehype-color-chips",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Benjamin Noah Beal",
   "description": "Rehype plugin to convert color codes into visual color chips in MDX",
   "license": "MIT",

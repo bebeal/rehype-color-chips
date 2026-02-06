@@ -1,4 +1,3 @@
-// rehype-color-chips.ts
 import { Element } from 'hast';
 import { Plugin } from 'unified';
 import { Node, Parent } from 'unist';
@@ -9,42 +8,51 @@ interface TextNode extends Node {
   value: string;
 }
 
+interface ColorChipOptions {
+  chipStyle?: Record<string, string>;
+  wrapperStyle?: Record<string, string>;
+}
+
+const defaultWrapperStyle: Record<string, string> = {
+  'display': 'inline-flex',
+  'align-items': 'center',
+  'vertical-align': 'middle',
+  'white-space': 'nowrap',
+  'font-size': 'inherit',
+  'line-height': 'inherit',
+  'font-family': 'inherit,monospace',
+};
+
+const defaultChipStyle: Record<string, string> = {
+  'display': 'inline-block',
+  'width': '1em',
+  'height': '1em',
+  'border': '0.5px solid color-mix(in srgb, currentColor 30%, transparent)',
+  'box-shadow': '0 0 0.5px 0 color-mix(in srgb, currentColor 20%, transparent)',
+  'border-radius': '0.175em',
+  'margin-right': '0.25em',
+  'vertical-align': 'middle',
+  'flex-shrink': '0',
+};
+
+const styleToString = (style: Record<string, string>): string =>
+  Object.entries(style).map(([k, v]) => `${k}:${v}`).join(';');
+
 // Simple regex for colors
 const colorRegex = /#([0-9A-Fa-f]{3})\b|#([0-9A-Fa-f]{4})\b|#([0-9A-Fa-f]{6})\b|#([0-9A-Fa-f]{8})\b|rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)|rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*(0|1|0?\.\d+)\s*\)/g;
 
 // Regex for escaped colors (with "\:" prefix)
 const escapePrefix = "\:";
 
-const createColorChip = (color: string): Element => ({
+const createColorChip = (color: string, wrapperStyle: string, chipStyle: string): Element => ({
   type: 'element',
   tagName: 'span',
-  properties: {
-    style: [
-      'display:inline-flex',
-      'align-items:center',
-      'justify-content:center',
-      'white-space:nowrap',
-      'font-size:inherit',
-      'line-height:inherit',
-      'font-family:inherit,monospace'
-    ].join(';')
-  },
+  properties: { style: wrapperStyle },
   children: [
     {
       type: 'element',
       tagName: 'span',
-      properties: {
-        style: [
-          'display:inline-block',
-          'width:0.6em',
-          'height:0.6em',
-          `background-color:${color}`,
-          'border:0.5px solid currentColor',
-          'box-shadow:inset 0 0 0 0.5px rgba(0,0,0,0.2)',
-          'border-radius:0.125em',
-          'margin-right:1px',
-        ].join(';')
-      },
+      properties: { style: `${chipStyle};background-color:${color}` },
       children: []
     },
     {
@@ -54,7 +62,10 @@ const createColorChip = (color: string): Element => ({
   ]
 });
 
-const rehypeColorChips: Plugin = () => {
+const rehypeColorChips: Plugin<[ColorChipOptions?]> = (options = {}) => {
+  const wrapperStyle = styleToString({ ...defaultWrapperStyle, ...options.wrapperStyle });
+  const chipStyle = styleToString({ ...defaultChipStyle, ...options.chipStyle });
+
   return (tree) => {
     // First pass: replace "\:" prefixes with a unique placeholder
     const escapedColors = new Map<string, string>();
@@ -63,7 +74,6 @@ const rehypeColorChips: Plugin = () => {
     visit(tree, 'text', (node: TextNode) => {
       if (!node.value) return;
 
-      // Replace escaped colors with placeholders
       node.value = node.value.replace(new RegExp(escapePrefix + '(' + colorRegex.source + ')', 'g'), (_, color) => {
         const placeholder = `__ESCAPED_COLOR_${counter++}__`;
         escapedColors.set(placeholder, color);
@@ -92,7 +102,7 @@ const rehypeColorChips: Plugin = () => {
           });
         }
 
-        result.push(createColorChip(color));
+        result.push(createColorChip(color, wrapperStyle, chipStyle));
         lastIndex = startIndex + color.length;
       });
 
@@ -119,3 +129,5 @@ const rehypeColorChips: Plugin = () => {
 };
 
 export default rehypeColorChips;
+export { defaultChipStyle, defaultWrapperStyle };
+export type { ColorChipOptions };

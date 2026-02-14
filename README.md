@@ -2,7 +2,7 @@
 
 Rehype plugin that converts color codes into visual color chips in MDX documents
 
-<img width="901" alt="Image" src="https://github.com/user-attachments/assets/cf6a0766-50d1-424e-a1d2-95c551346900" />
+<img width="901" alt="Image" src="https://github.com/user-attachments/assets/1a70064d-30fb-4fbe-9648-7ecdcb2f5eaa" />
 
 ## Install
 

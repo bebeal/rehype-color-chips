@@ -35,5 +35,5 @@ Blue: #00f
 
 Turns into:
 
-<img width="186" alt="Image" src="https://github.com/user-attachments/assets/eb086dd7-c0d0-4793-addc-94a91ca60905" />
+<img width="186" alt="Image" src="https://github.com/user-attachments/assets/8f5fe976-6831-47a0-99d4-5a5e1b21205a" />
 
